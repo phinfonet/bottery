@@ -1,8 +1,24 @@
+import logging
 import os
 
+import click
 from click.testing import CliRunner
 
-from bottery.cli import cli
+from bottery.cli import cli, debug_option
+
+
+def test_debug_option():
+    logger = logging.getLogger('bottery')
+
+    @click.command()
+    @debug_option
+    def hello(debug):
+        pass
+
+    runner = CliRunner()
+    runner.invoke(hello, ['--debug'])
+
+    assert logger.level == logging.DEBUG
 
 
 def test_startproject():
